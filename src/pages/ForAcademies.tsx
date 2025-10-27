@@ -120,7 +120,7 @@ Additional Notes: ${data.notes || 'None'}`;
 
             {/* Features List */}
             <div className="max-w-3xl mx-auto mb-16">
-              <h2 className="text-3xl font-display font-bold text-center mb-8">Why Choose NrityaReady?</h2>
+              <h2 className="text-3xl font-display font-bold text-center mb-8">Why Choose TaalBox?</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {[
                   "Guaranteed backup costumes for every order",
@@ -237,7 +237,7 @@ Additional Notes: ${data.notes || 'None'}`;
                     </Button>
 
                     <p className="text-xs text-center text-muted-foreground">
-                      By submitting this form, you agree to be contacted by NrityaReady regarding your demo request.
+                      By submitting this form, you agree to be contacted by TaalBox regarding your demo request.
                     </p>
                   </form>
                 </CardContent>
@@ -266,7 +266,7 @@ Additional Notes: ${data.notes || 'None'}`;
               <Card>
                 <CardContent className="pt-6">
                   <p className="text-muted-foreground mb-4 italic">
-                    "Working with NrityaReady has simplified our costume planning significantly. The pilot offer helped us try their service risk-free. Now we're permanent clients!"
+                    "Working with TaalBox has simplified our costume planning significantly. The pilot offer helped us try their service risk-free. Now we're permanent clients!"
                   </p>
                   <div>
                     <p className="font-semibold">Anjali Mehta</p>

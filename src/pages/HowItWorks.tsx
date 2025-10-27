@@ -16,7 +16,7 @@ const HowItWorks = () => {
         <section className="py-20 bg-gradient-to-br from-primary/10 to-accent/10">
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-4xl md:text-6xl font-display font-bold mb-6">
-              How NrityaReady Works
+              How TaalBox Works
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Four simple steps to stage-ready costumes with guaranteed backup support

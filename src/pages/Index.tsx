@@ -195,7 +195,7 @@ const Index = () => {
                     ))}
                   </div>
                   <p className="text-muted-foreground mb-4 italic">
-                    "NrityaReady saved our annual day! The backup guarantee meant we could focus on choreography, not costume stress."
+                    "TaalBox saved our annual day! The backup guarantee meant we could focus on choreography, not costume stress."
                   </p>
                   <div className="flex items-center space-x-3">
                     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">

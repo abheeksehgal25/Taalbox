@@ -57,7 +57,7 @@ Sample photos and SKU CSV will be shared separately.`;
         <section className="py-20 bg-gradient-to-br from-primary/10 to-accent/10">
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-4xl md:text-6xl font-display font-bold mb-6">
-              Grow Your Rental Business — List with NrityaReady
+              Grow Your Rental Business — List with TaalBox
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
               Connect with dance academies across Gurgaon. Earn standby fees and rental income with guaranteed payments.
@@ -184,7 +184,7 @@ Sample photos and SKU CSV will be shared separately.`;
                     <div className="flex items-start space-x-3">
                       <Checkbox id="agreeMou" checked={agreedToMou} onCheckedChange={(checked) => setAgreedToMou(checked as boolean)} />
                       <label htmlFor="agreeMou" className="text-sm text-muted-foreground cursor-pointer">
-                        I agree to the NrityaReady Vendor MoU terms and conditions *
+                        I agree to the TaalBox Vendor MoU terms and conditions *
                       </label>
                     </div>
 

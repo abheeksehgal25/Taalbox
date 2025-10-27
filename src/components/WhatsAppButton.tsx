@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 const WhatsAppButton = () => {
   const handleWhatsAppClick = () => {
-    const message = encodeURIComponent("Hi! I'm interested in NrityaReady costume rentals.");
+    const message = encodeURIComponent("Hi! I'm interested in TaalBox costume rentals.");
     window.open(`https://wa.me/919999999999?text=${message}`, '_blank');
   };
 

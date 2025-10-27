@@ -106,8 +106,8 @@ Message: ${data.message}`;
                         <p className="text-sm text-muted-foreground mb-2">
                           We'll respond within 24 hours
                         </p>
-                        <a href="mailto:hello@nrityaready.com" className="text-primary hover:underline">
-                          hello@nrityaready.com
+                        <a href="mailto:hello@taalbox.com" className="text-primary hover:underline">
+                          hello@taalbox.com
                         </a>
                       </div>
                     </div>
@@ -175,7 +175,7 @@ Message: ${data.message}`;
                       </Button>
 
                       <p className="text-xs text-center text-muted-foreground">
-                        By submitting this form, you agree to be contacted by NrityaReady.
+                        By submitting this form, you agree to be contacted by TaalBox.
                       </p>
                     </form>
                   </CardContent>

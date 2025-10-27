@@ -29,7 +29,7 @@ const About = () => {
             <div className="max-w-4xl mx-auto">
               <div className="prose prose-lg max-w-none">
                 <p className="text-lg text-muted-foreground mb-6">
-                  NrityaReady was born out of frustration — the kind every dancer knows too well. Last-minute costume disasters, ill-fitting rentals, and the anxiety of group performances where even one missing costume could derail the entire show.
+                  TaalBox was born out of frustration — the kind every dancer knows too well. Last-minute costume disasters, ill-fitting rentals, and the anxiety of group performances where even one missing costume could derail the entire show.
                 </p>
                 
                 <p className="text-lg text-muted-foreground mb-6">
@@ -37,7 +37,7 @@ const About = () => {
                 </p>
 
                 <p className="text-lg text-muted-foreground mb-6">
-                  After choreographing my fifth annual day event, I realized: this shouldn't be so hard. Dance is about art, expression, and joy — not logistics nightmares. That's when NrityaReady started taking shape.
+                  After choreographing my fifth annual day event, I realized: this shouldn't be so hard. Dance is about art, expression, and joy — not logistics nightmares. That's when TaalBox started taking shape.
                 </p>
 
                 <div className="my-12 p-8 bg-primary/5 rounded-lg border-l-4 border-primary">
@@ -45,7 +45,7 @@ const About = () => {
                     "What if every costume had a guaranteed backup? What if vendors and dancers could trust each other through a reliable platform?"
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    — The founding vision of NrityaReady
+                    — The founding vision of TaalBox
                   </p>
                 </div>
 
@@ -112,7 +112,7 @@ const About = () => {
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl font-display font-bold mb-6">We're Still Growing</h2>
               <p className="text-lg text-muted-foreground mb-8">
-                NrityaReady is in its pilot phase, which means you're part of something special. Your feedback directly shapes how we build this platform. Every academy that trusts us, every vendor that partners with us, and every dancer that performs in our costumes is helping create a better future for the dance community.
+                TaalBox is in its pilot phase, which means you're part of something special. Your feedback directly shapes how we build this platform. Every academy that trusts us, every vendor that partners with us, and every dancer that performs in our costumes is helping create a better future for the dance community.
               </p>
               <p className="text-lg text-muted-foreground">
                 Thank you for being part of this journey. Together, we're making stage-ready looks accessible, reliable, and stress-free for everyone.

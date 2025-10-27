@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <Sparkles className="h-6 w-6 text-primary" />
-              <span className="text-xl font-display font-bold text-primary">NrityaReady</span>
+              <span className="text-xl font-display font-bold text-primary">TaalBox</span>
             </div>
             <p className="text-sm text-muted-foreground">
               Stage-ready classical costumes for rent and purchase. Serving dance academies across Gurgaon.
@@ -100,7 +100,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} NrityaReady. All rights reserved. Built by dancers, for dancers.</p>
+          <p>&copy; {new Date().getFullYear()} TaalBox. All rights reserved. Built by dancers, for dancers.</p>
         </div>
       </div>
     </footer>

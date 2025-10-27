@@ -46,7 +46,7 @@ const Header = () => {
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
             <Sparkles className="h-6 w-6 text-primary" />
-            <span className="text-2xl font-display font-bold text-primary">NrityaReady</span>
+            <span className="text-2xl font-display font-bold text-primary">TaalBox</span>
           </Link>
 
           <nav className="hidden md:flex items-center space-x-6">
