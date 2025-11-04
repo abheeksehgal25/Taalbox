@@ -43,8 +43,8 @@ const Catalog = () => {
       <main className="flex-1 py-12">
         <div className="container mx-auto px-4">
           <div className="mb-8">
-            <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">Costume Catalog</h1>
-            <p className="text-xl text-muted-foreground">Browse our curated collection of performance costumes and essentials</p>
+            <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">Performance Essentials Catalog</h1>
+            <p className="text-xl text-muted-foreground">Browse our curated collection of costumes, jewelry, and performance essentials</p>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-8">
