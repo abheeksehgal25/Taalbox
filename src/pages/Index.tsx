@@ -6,61 +6,38 @@ import { Shield, Package, Users, ArrowRight, CheckCircle2, Star } from "lucide-r
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3.jpg";
 import { costumes } from "@/data/costumes";
-
 const Index = () => {
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Header />
       <WhatsAppButton />
       
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative">
-          <Carousel
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            plugins={[
-              Autoplay({
-                delay: 5000,
-              }),
-            ]}
-            className="w-full"
-          >
+          <Carousel opts={{
+          align: "start",
+          loop: true
+        }} plugins={[Autoplay({
+          delay: 5000
+        })]} className="w-full">
             <CarouselContent>
-              {[hero1, hero2, hero3].map((image, index) => (
-                <CarouselItem key={index}>
+              {[hero1, hero2, hero3].map((image, index) => <CarouselItem key={index}>
                   <div className="relative h-[70vh] md:h-[80vh]">
-                    <img
-                      src={image}
-                      alt={`Stage performance ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
+                    <img src={image} alt={`Stage performance ${index + 1}`} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="container mx-auto px-4 text-center text-white">
                         <Badge className="mb-4 bg-accent text-accent-foreground border-0 text-sm px-4 py-1">
                           Serving Gurgaon Dance Academies
                         </Badge>
-                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-6 max-w-5xl mx-auto leading-tight">
-                          Stage-ready costumes and essentials — rent or buy for your next performance
-                        </h1>
-                        <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-white/90">
-                          Costumes, jewelry, and performance essentials. Delivery & pickup in Gurgaon. Guaranteed backup for group shows.
-                        </p>
+                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-6 max-w-5xl mx-auto leading-tight">Stage-ready costumes and essentials for your next performance</h1>
+                        <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-white/90">Rent costumes, jewelry, and performance essentials. Delivery &amp; pickup in Gurgaon. Guaranteed backup for group shows.</p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                           <Button asChild size="lg" className="gradient-gold border-0 text-white text-lg px-8">
                             <Link to="/catalog">
@@ -74,8 +51,7 @@ const Index = () => {
                       </div>
                     </div>
                   </div>
-                </CarouselItem>
-              ))}
+                </CarouselItem>)}
             </CarouselContent>
             <CarouselPrevious className="left-4" />
             <CarouselNext className="right-4" />
@@ -136,20 +112,13 @@ const Index = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {costumes.slice(0, 4).map((costume) => (
-                <Link key={costume.id} to={`/costume/${costume.id}`}>
+              {costumes.slice(0, 4).map(costume => <Link key={costume.id} to={`/costume/${costume.id}`}>
                   <Card className="overflow-hidden hover-lift border-2 hover:border-gold transition-all">
                     <div className="aspect-[3/4] relative">
-                      <img
-                        src={costume.image}
-                        alt={costume.title}
-                        className="w-full h-full object-cover"
-                      />
-                      {costume.guaranteedBackup && (
-                        <Badge className="absolute top-3 right-3 bg-accent text-accent-foreground border-0">
+                      <img src={costume.image} alt={costume.title} className="w-full h-full object-cover" />
+                      {costume.guaranteedBackup && <Badge className="absolute top-3 right-3 bg-accent text-accent-foreground border-0">
                           Guaranteed Backup
-                        </Badge>
-                      )}
+                        </Badge>}
                     </div>
                     <CardContent className="p-4">
                       <Badge variant="outline" className="mb-2">{costume.danceForm}</Badge>
@@ -164,8 +133,7 @@ const Index = () => {
                       </div>
                     </CardContent>
                   </Card>
-                </Link>
-              ))}
+                </Link>)}
             </div>
 
             <div className="text-center">
@@ -190,9 +158,7 @@ const Index = () => {
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex mb-3">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 fill-accent text-accent" />
-                    ))}
+                    {[...Array(5)].map((_, i) => <Star key={i} className="h-5 w-5 fill-accent text-accent" />)}
                   </div>
                   <p className="text-muted-foreground mb-4 italic">
                     "TaalBox saved our annual day! The backup guarantee meant we could focus on choreography, not costume stress."
@@ -212,9 +178,7 @@ const Index = () => {
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex mb-3">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 fill-accent text-accent" />
-                    ))}
+                    {[...Array(5)].map((_, i) => <Star key={i} className="h-5 w-5 fill-accent text-accent" />)}
                   </div>
                   <p className="text-muted-foreground mb-4 italic">
                     "Amazing quality costumes and the jewelry sets are perfect. Professional service from start to finish."
@@ -273,8 +237,6 @@ const Index = () => {
       </main>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
