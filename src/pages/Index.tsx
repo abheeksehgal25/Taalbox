@@ -228,7 +228,7 @@ const Index = () => {
               <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 text-lg px-8">
                 <Link to="/for-academies">Book a Demo</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-white bg-transparent text-red-500 hover:bg-white/10 hover:text-red-600 text-lg px-8">
+              <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 text-lg px-8">
                 <Link to="/get-quote">Get Custom Quote</Link>
               </Button>
             </div>
