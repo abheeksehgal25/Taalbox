@@ -14,34 +14,103 @@ import { useState } from "react";
 const ForVendors = () => {
   const [agreedToMou, setAgreedToMou] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!agreedToMou) {
       toast.error("Please agree to the MoU terms to continue");
       return;
     }
 
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData);
-    
-    const message = `New Vendor Signup:
-Business: ${data.businessName}
-Owner: ${data.ownerName}
-Email: ${data.email}
-Phone: ${data.phone}
-Location: ${data.cityArea}
-Bank Details: ${data.bankDetails}
-Notes: ${data.notes || 'None'}
+    const form = e.currentTarget;
+    const formData = new FormData(form);
 
-Sample photos and SKU CSV will be shared separately.`;
+    // Extract files separately
+    const files = formData.getAll("samplePhotos") as File[];
+    if (files.length === 0) {
+      toast.error("Please upload at least one photo");
+      return;
+    }
+
+    // Create multipart FormData for the request
+    const requestData = new FormData();
     
-    const whatsappUrl = `https://wa.me/919999999999?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-    
-    toast.success("Vendor signup submitted! We'll contact you within 24 hours.");
-    e.currentTarget.reset();
-    setAgreedToMou(false);
+    // Add form fields
+    requestData.append("name", formData.get("businessName") as string);
+    requestData.append("email", formData.get("email") as string);
+    requestData.append("phone", formData.get("phone") as string);
+    requestData.append("city", formData.get("cityArea") as string);
+    requestData.append("address", formData.get("address") || "");
+
+    // Add files
+    files.forEach((file) => {
+      requestData.append("samplePhotos", file);
+    });
+
+    // Add inventory as JSON string
+    // Build rich inventory item from form inputs
+    const toBool = (v: FormDataEntryValue | null) => {
+      const s = String(v || "").toLowerCase().trim();
+      return s === "true" || s === "yes" || s === "1";
+    };
+    const toNum = (v: FormDataEntryValue | null) => {
+      const n = Number(v);
+      return isNaN(n) ? undefined : n;
+    };
+    const toArray = (v: FormDataEntryValue | null) =>
+      String(v || "")
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean);
+
+    const inventory = [
+      {
+        title: `${formData.get("businessName")} — Sample Set`,
+        danceForm: formData.get("danceForm") || "Unknown",
+        styleTag: formData.get("styleTag") || "",
+        description: formData.get("description") || "",
+        location: formData.get("cityArea") || "",
+        sizesAvailable: toArray(formData.get("sizesAvailable")),
+        fabric: formData.get("fabric") || "",
+        colorFamily: toArray(formData.get("colorFamily")),
+        rentPricePerDay: toNum(formData.get("rentPricePerDay")) ?? 0,
+        buyPrice: toNum(formData.get("buyPrice")) ?? 0,
+        deposit: toNum(formData.get("deposit")),
+        leadTimeDays: toNum(formData.get("leadTimeDays")),
+        availabilityStatus: (formData.get("availabilityStatus") as string) || "available",
+        rentalMinDays: toNum(formData.get("rentalMinDays")),
+        rentalMaxDays: toNum(formData.get("rentalMaxDays")),
+        bookingNotes: formData.get("bookingNotes") || "",
+        adjustable: toBool(formData.get("adjustable")),
+        fitNotes: formData.get("fitNotes") || "",
+        alterationsIncluded: toBool(formData.get("alterationsIncluded")),
+        damagePolicy: formData.get("damagePolicy") || "",
+        returnPolicy: formData.get("returnPolicy") || "",
+        backupAvailable: true,
+      },
+    ];
+    requestData.append("inventory", JSON.stringify(inventory));
+
+    try {
+      const base = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+      const res = await fetch(`${base}/api/vendors`, {
+        method: "POST",
+        body: requestData, // Don't set Content-Type header; browser will set it to multipart/form-data
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || "Failed to submit vendor signup");
+      }
+
+      toast.success("Vendor signup submitted — your inventory is now listed in the catalog.");
+      form.reset();
+      setAgreedToMou(false);
+    } catch (err: unknown) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      console.error(error);
+      toast.error(error.message || "Submission failed. Please try again.");
+    }
   };
 
   const handleDownloadMou = () => {
@@ -137,7 +206,7 @@ Sample photos and SKU CSV will be shared separately.`;
 
               <Card>
                 <CardContent className="pt-6">
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form onSubmit={handleSubmit} className="space-y-10">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="businessName">Business Name *</Label>
@@ -171,6 +240,119 @@ Sample photos and SKU CSV will be shared separately.`;
                       <p className="text-xs text-muted-foreground">Upload 3-5 photos of your best costumes</p>
                     </div>
 
+                    {/* Inventory Details Section */}
+                    <div className="space-y-6">
+                      <h3 className="text-xl font-display font-semibold">Inventory Item (Sample)</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="danceForm">Dance Form *</Label>
+                          <Input id="danceForm" name="danceForm" placeholder="e.g., Bharatanatyam" required />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="styleTag">Style Tag</Label>
+                          <Input id="styleTag" name="styleTag" placeholder="Traditional / Fusion" />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="description">Description</Label>
+                        <Textarea id="description" name="description" rows={3} placeholder="Brief description of this costume set" />
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="sizesAvailable">Sizes (comma separated)</Label>
+                          <Input id="sizesAvailable" name="sizesAvailable" placeholder="S,M,L" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="fabric">Fabric</Label>
+                          <Input id="fabric" name="fabric" placeholder="Silk, Cotton" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="colorFamily">Colors (comma separated)</Label>
+                          <Input id="colorFamily" name="colorFamily" placeholder="Maroon, Gold" />
+                        </div>
+                      </div>
+
+                      {/* Pricing */}
+                      <div className="space-y-4">
+                        <h4 className="font-semibold">Pricing</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="rentPricePerDay">Rent / Day (₹)</Label>
+                            <Input id="rentPricePerDay" name="rentPricePerDay" type="number" min="0" />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="buyPrice">Buy Price (₹)</Label>
+                            <Input id="buyPrice" name="buyPrice" type="number" min="0" />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="deposit">Deposit (₹)</Label>
+                            <Input id="deposit" name="deposit" type="number" min="0" />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="leadTimeDays">Lead Time (days)</Label>
+                            <Input id="leadTimeDays" name="leadTimeDays" type="number" min="0" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Availability */}
+                      <div className="space-y-4">
+                        <h4 className="font-semibold">Availability & Booking</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="availabilityStatus">Status</Label>
+                            <Input id="availabilityStatus" name="availabilityStatus" placeholder="available" />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="rentalMinDays">Min Days</Label>
+                            <Input id="rentalMinDays" name="rentalMinDays" type="number" min="1" />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="rentalMaxDays">Max Days</Label>
+                            <Input id="rentalMaxDays" name="rentalMaxDays" type="number" min="1" />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="bookingNotes">Booking Notes</Label>
+                            <Input id="bookingNotes" name="bookingNotes" placeholder="Book 48h in advance" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Fit & Alterations */}
+                      <div className="space-y-4">
+                        <h4 className="font-semibold">Fit & Alterations</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="adjustable">Adjustable?</Label>
+                            <Input id="adjustable" name="adjustable" placeholder="yes/no" />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="fitNotes">Fit Notes</Label>
+                            <Input id="fitNotes" name="fitNotes" placeholder="Tie-back blouse" />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="alterationsIncluded">Alterations Included?</Label>
+                            <Input id="alterationsIncluded" name="alterationsIncluded" placeholder="yes/no" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Policies */}
+                      <div className="space-y-4">
+                        <h4 className="font-semibold">Policies</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="damagePolicy">Damage Policy</Label>
+                            <Textarea id="damagePolicy" name="damagePolicy" rows={2} placeholder="Normal wear ok; tears billed." />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="returnPolicy">Return Policy</Label>
+                            <Textarea id="returnPolicy" name="returnPolicy" rows={2} placeholder="Return within 24h." />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="space-y-2">
                       <Label htmlFor="bankDetails">Bank Details (for payouts) *</Label>
                       <Textarea id="bankDetails" name="bankDetails" placeholder="Account Name, Account Number, IFSC Code, Bank Name" rows={3} required />
@@ -189,7 +371,7 @@ Sample photos and SKU CSV will be shared separately.`;
                     </div>
 
                     <Button type="submit" size="lg" className="w-full gradient-gold border-0 text-white" disabled={!agreedToMou}>
-                      Submit Vendor Signup
+                      Submit Vendor & Sample Inventory
                     </Button>
                   </form>
                 </CardContent>

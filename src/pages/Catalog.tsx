@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { costumes } from "@/data/costumes";
+import { costumes as localCostumes } from "@/data/costumes";
 import { MapPin } from "lucide-react";
 
 const Catalog = () => {
@@ -20,7 +21,20 @@ const Catalog = () => {
   const [priceRange, setPriceRange] = useState([0, 20000]);
   const [sortBy, setSortBy] = useState("popular");
 
-  const danceForms = Array.from(new Set(costumes.map(c => c.danceForm)));
+  const { data: fetchedCostumes, isLoading } = useQuery({
+    queryKey: ["costumes"],
+    queryFn: async () => {
+      const base = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+      const res = await fetch(`${base}/api/costumes`);
+      if (!res.ok) throw new Error("Failed to fetch costumes");
+      return res.json();
+    },
+    retry: 1,
+  });
+
+  const sourceCostumes = fetchedCostumes || localCostumes;
+
+  const danceForms = Array.from(new Set(sourceCostumes.map((c: any) => c.danceForm)));
 
   const toggleDanceForm = (form: string) => {
     setSelectedDanceForms(prev =>
@@ -28,8 +42,10 @@ const Catalog = () => {
     );
   };
 
-  const filteredCostumes = costumes.filter(costume => {
-    const price = mode === "rent" ? costume.rentPrice : costume.buyPrice;
+  const filteredCostumes = sourceCostumes.filter((costume: any) => {
+    const rentPrice = costume.rentPrice ?? costume.rentPricePerDay ?? 0;
+    const buyPrice = costume.buyPrice ?? 0;
+    const price = mode === "rent" ? rentPrice : buyPrice;
     const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
     const matchesDanceForm = selectedDanceForms.length === 0 || selectedDanceForms.includes(costume.danceForm);
     return matchesPrice && matchesDanceForm;
@@ -131,51 +147,84 @@ const Catalog = () => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredCostumes.map((costume) => (
-                  <Link key={costume.id} to={`/costume/${costume.id}`}>
-                    <Card className="overflow-hidden hover-lift border-2 hover:border-gold transition-all h-full">
-                      <div className="aspect-[3/4] relative">
-                        <img
-                          src={costume.image}
-                          alt={costume.title}
-                          className="w-full h-full object-cover"
-                        />
-                        {costume.guaranteedBackup && (
-                          <Badge className="absolute top-3 right-3 bg-accent text-accent-foreground border-0">
-                            Guaranteed Backup
-                          </Badge>
-                        )}
-                      </div>
-                      <CardContent className="p-4">
-                        <div className="flex gap-2 mb-2">
-                          <Badge variant="outline">{costume.danceForm}</Badge>
-                          <Badge variant="secondary" className="text-xs">{costume.styleTag}</Badge>
+                {filteredCostumes.map((costume: any) => {
+                  const id = costume._id || costume.id;
+                  const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+                  const resolveImageUrl = (raw?: string) => {
+                    if (!raw) return "";
+                    const s = String(raw);
+                    if (s.startsWith("http://") || s.startsWith("https://")) return s;
+                    if (s.startsWith("/uploads/")) return `${apiBase}${s}`;
+                    // Fallback: join with base and ensure single slash
+                    return `${apiBase}/${s.replace(/^\/+/, "")}`;
+                  };
+                  const rawImg = costume.image || (Array.isArray(costume.photos) && costume.photos[0]) || "";
+                  const img = resolveImageUrl(rawImg);
+                  const PLACEHOLDER =
+                    "data:image/svg+xml;utf8," +
+                    encodeURIComponent(
+                      `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 533'>` +
+                        `<defs><linearGradient id='g' x1='0' x2='0' y1='0' y2='1'><stop stop-color='#f3f4f6' offset='0'/><stop stop-color='#e5e7eb' offset='1'/></linearGradient></defs>` +
+                        `<rect width='400' height='533' fill='url(#g)'/>` +
+                        `<g fill='#9ca3af' font-family='Arial,Helvetica,sans-serif' font-size='20' text-anchor='middle'>` +
+                          `<text x='200' y='266'>No image</text>` +
+                        `</g>` +
+                      `</svg>`
+                    );
+                  const guaranteed = costume.guaranteedBackup || costume.backupAvailable || false;
+                  const rentPrice = costume.rentPrice ?? costume.rentPricePerDay ?? 0;
+                  const buyPrice = costume.buyPrice ?? 0;
+                  const sizes = costume.sizes || costume.sizesAvailable || [];
+
+                  return (
+                    <Link key={id} to={`/costume/${id}`}>
+                      <Card className="overflow-hidden hover-lift border-2 hover:border-gold transition-all h-full">
+                        <div className="aspect-[3/4] relative">
+                          <img
+                            src={img || PLACEHOLDER}
+                            onError={(e) => {
+                              if (e.currentTarget.src !== PLACEHOLDER) e.currentTarget.src = PLACEHOLDER;
+                            }}
+                            alt={costume.title}
+                            className="w-full h-full object-cover"
+                          />
+                          {guaranteed && (
+                            <Badge className="absolute top-3 right-3 bg-accent text-accent-foreground border-0">
+                              Guaranteed Backup
+                            </Badge>
+                          )}
                         </div>
-                        <h3 className="font-display font-semibold mb-2 line-clamp-2">{costume.title}</h3>
-                        <div className="space-y-1 mb-3">
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="text-muted-foreground">Rent</span>
-                            <span className="font-semibold">₹{costume.rentPrice}/day</span>
+                        <CardContent className="p-4">
+                          <div className="flex gap-2 mb-2">
+                            <Badge variant="outline">{costume.danceForm}</Badge>
+                            <Badge variant="secondary" className="text-xs">{costume.styleTag}</Badge>
                           </div>
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="text-muted-foreground">Buy</span>
-                            <span className="font-semibold">₹{costume.buyPrice}</span>
+                          <h3 className="font-display font-semibold mb-2 line-clamp-2">{costume.title}</h3>
+                          <div className="space-y-1 mb-3">
+                            <div className="flex justify-between items-center text-sm">
+                              <span className="text-muted-foreground">Rent</span>
+                              <span className="font-semibold">₹{rentPrice}/day</span>
+                            </div>
+                            <div className="flex justify-between items-center text-sm">
+                              <span className="text-muted-foreground">Buy</span>
+                              <span className="font-semibold">₹{buyPrice}</span>
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex items-center justify-between text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <MapPin className="h-3 w-3" />
-                            {costume.location}
-                          </span>
-                          <span>{costume.sizes.join(", ")}</span>
-                        </div>
-                        <Button className="w-full mt-3 gradient-gold border-0 text-white">
-                          {mode === "rent" ? "Rent Now" : "Buy Now"}
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
+                          <div className="flex items-center justify-between text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <MapPin className="h-3 w-3" />
+                              {costume.location}
+                            </span>
+                            <span>{Array.isArray(sizes) ? sizes.join(", ") : "-"}</span>
+                          </div>
+                          <Button className="w-full mt-3 gradient-gold border-0 text-white">
+                            {mode === "rent" ? "Rent Now" : "Buy Now"}
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </div>
