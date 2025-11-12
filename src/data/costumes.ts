@@ -1,3 +1,14 @@
+import img1 from "@/assets/costume-1.jpg";
+import img2 from "@/assets/costume-2.jpg";
+import img3 from "@/assets/costume-3.jpg";
+import img4 from "@/assets/costume-4.jpg";
+import img5 from "@/assets/costume-5.jpg";
+import img6 from "@/assets/costume-6.jpg";
+import img7 from "@/assets/costume-7.jpg";
+import img8 from "@/assets/costume-8.jpg";
+import img9 from "@/assets/costume-9.jpg";
+import img10 from "@/assets/costume-10.jpg";
+
 export interface Costume {
   id: string;
   title: string;
@@ -44,7 +55,7 @@ export const costumes: Costume[] = [
     buyPrice: 12000,
     deposit: 2000,
     leadTimeDays: 2,
-    photos: ["/src/assets/costume-1.jpg"],
+  photos: [img1],
     location: "Gurgaon",
     availabilityStatus: 'available',
     backupAvailable: true,
@@ -55,7 +66,7 @@ export const costumes: Costume[] = [
     rentPrice: 1500,
     sizes: ["S", "M", "L", "XL"],
     guaranteedBackup: true,
-    image: "/src/assets/costume-1.jpg",
+  image: img1,
     colors: ["Red", "Gold"]
   },
   {
@@ -72,7 +83,7 @@ export const costumes: Costume[] = [
     buyPrice: 9000,
     deposit: 1500,
     leadTimeDays: 2,
-    photos: ["/src/assets/costume-2.jpg"],
+  photos: [img2],
     location: "Gurgaon",
     availabilityStatus: 'available',
     backupAvailable: true,
@@ -83,7 +94,7 @@ export const costumes: Costume[] = [
     rentPrice: 1200,
     sizes: ["S", "M", "L", "XL"],
     guaranteedBackup: true,
-    image: "/src/assets/costume-2.jpg",
+  image: img2,
     colors: ["Green", "Gold"]
   },
   {
@@ -100,7 +111,7 @@ export const costumes: Costume[] = [
     buyPrice: 7500,
     deposit: 1200,
     leadTimeDays: 2,
-    photos: ["/src/assets/costume-3.jpg"],
+  photos: [img3],
     location: "Gurgaon",
     availabilityStatus: 'available',
     backupAvailable: false,
@@ -111,7 +122,7 @@ export const costumes: Costume[] = [
     rentPrice: 1000,
     sizes: ["S", "M", "L", "XL"],
     guaranteedBackup: false,
-    image: "/src/assets/costume-3.jpg",
+  image: img3,
     colors: ["White", "Silver"]
   },
   {
@@ -128,7 +139,7 @@ export const costumes: Costume[] = [
     buyPrice: 11000,
     deposit: 1800,
     leadTimeDays: 2,
-    photos: ["/src/assets/costume-4.jpg"],
+  photos: [img4],
     location: "Gurgaon",
     availabilityStatus: 'available',
     backupAvailable: true,
@@ -139,7 +150,7 @@ export const costumes: Costume[] = [
     rentPrice: 1400,
     sizes: ["S", "M", "L"],
     guaranteedBackup: true,
-    image: "/src/assets/costume-4.jpg",
+  image: img4,
     colors: ["Black", "Gold"]
   },
   {
@@ -156,7 +167,7 @@ export const costumes: Costume[] = [
     buyPrice: 6000,
     deposit: 1000,
     leadTimeDays: 2,
-    photos: ["/src/assets/costume-5.jpg"],
+  photos: [img5],
     location: "Gurgaon",
     availabilityStatus: 'available',
     backupAvailable: false,
@@ -167,7 +178,7 @@ export const costumes: Costume[] = [
     rentPrice: 900,
     sizes: ["S", "M", "L", "XL"],
     guaranteedBackup: false,
-    image: "/src/assets/costume-5.jpg",
+  image: img5,
     colors: ["Yellow", "Orange"]
   },
   {
@@ -184,7 +195,7 @@ export const costumes: Costume[] = [
     buyPrice: 14000,
     deposit: 2500,
     leadTimeDays: 2,
-    photos: ["/src/assets/costume-6.jpg"],
+  photos: [img6],
     location: "Gurgaon",
     availabilityStatus: 'available',
     backupAvailable: true,
@@ -195,7 +206,7 @@ export const costumes: Costume[] = [
     rentPrice: 1800,
     sizes: ["S", "M", "L"],
     guaranteedBackup: true,
-    image: "/src/assets/costume-6.jpg",
+  image: img6,
     colors: ["Maroon", "Gold"]
   },
   {
@@ -212,7 +223,7 @@ export const costumes: Costume[] = [
     buyPrice: 12500,
     deposit: 2000,
     leadTimeDays: 2,
-    photos: ["/src/assets/costume-7.jpg"],
+  photos: [img7],
     location: "Gurgaon",
     availabilityStatus: 'available',
     backupAvailable: true,
@@ -223,7 +234,7 @@ export const costumes: Costume[] = [
     rentPrice: 1500,
     sizes: ["S", "M", "L", "XL"],
     guaranteedBackup: true,
-    image: "/src/assets/costume-7.jpg",
+  image: img7,
     colors: ["Blue", "Silver"]
   },
   {
@@ -240,7 +251,7 @@ export const costumes: Costume[] = [
     buyPrice: 13000,
     deposit: 2200,
     leadTimeDays: 2,
-    photos: ["/src/assets/costume-8.jpg"],
+  photos: [img8],
     location: "Gurgaon",
     availabilityStatus: 'available',
     backupAvailable: false,
@@ -251,7 +262,7 @@ export const costumes: Costume[] = [
     rentPrice: 1600,
     sizes: ["S", "M", "L"],
     guaranteedBackup: false,
-    image: "/src/assets/costume-8.jpg",
+  image: img8,
     colors: ["Cream", "Silver"]
   },
   {
@@ -268,7 +279,7 @@ export const costumes: Costume[] = [
     buyPrice: 8000,
     deposit: 1400,
     leadTimeDays: 2,
-    photos: ["/src/assets/costume-9.jpg"],
+  photos: [img9],
     location: "Gurgaon",
     availabilityStatus: 'available',
     backupAvailable: false,
@@ -279,7 +290,7 @@ export const costumes: Costume[] = [
     rentPrice: 1100,
     sizes: ["Free Size"],
     guaranteedBackup: false,
-    image: "/src/assets/costume-9.jpg",
+  image: img9,
     colors: ["Purple", "Black"]
   },
   {
@@ -296,7 +307,7 @@ export const costumes: Costume[] = [
     buyPrice: 16000,
     deposit: 3000,
     leadTimeDays: 2,
-    photos: ["/src/assets/costume-10.jpg"],
+  photos: [img10],
     location: "Gurgaon",
     availabilityStatus: 'available',
     backupAvailable: true,
@@ -307,7 +318,7 @@ export const costumes: Costume[] = [
     rentPrice: 2000,
     sizes: ["S", "M", "L"],
     guaranteedBackup: true,
-    image: "/src/assets/costume-10.jpg",
+  image: img10,
     colors: ["Gold", "Red"]
   }
 ];

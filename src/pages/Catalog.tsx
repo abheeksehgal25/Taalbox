@@ -32,9 +32,15 @@ const Catalog = () => {
     retry: 1,
   });
 
-  const sourceCostumes = fetchedCostumes || localCostumes;
+  type CostumeLite = {
+    _id?: string; id?: string; title?: string; danceForm: string; styleTag?: string;
+    rentPricePerDay?: number; rentPrice?: number; buyPrice?: number; deposit?: number;
+    photos?: string[]; image?: string; location?: string; sizes?: string[]; sizesAvailable?: string[];
+    guaranteedBackup?: boolean; backupAvailable?: boolean;
+  };
+  const sourceCostumes: CostumeLite[] = (fetchedCostumes as CostumeLite[]) || (localCostumes as unknown as CostumeLite[]);
 
-  const danceForms = Array.from(new Set(sourceCostumes.map((c: any) => c.danceForm)));
+  const danceForms: string[] = Array.from(new Set(sourceCostumes.map((c) => c.danceForm)));
 
   const toggleDanceForm = (form: string) => {
     setSelectedDanceForms(prev =>
@@ -42,7 +48,7 @@ const Catalog = () => {
     );
   };
 
-  const filteredCostumes = sourceCostumes.filter((costume: any) => {
+  const filteredCostumes = sourceCostumes.filter((costume: CostumeLite) => {
     const rentPrice = costume.rentPrice ?? costume.rentPricePerDay ?? 0;
     const buyPrice = costume.buyPrice ?? 0;
     const price = mode === "rent" ? rentPrice : buyPrice;
@@ -147,16 +153,18 @@ const Catalog = () => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredCostumes.map((costume: any) => {
+                {filteredCostumes.map((costume: CostumeLite) => {
                   const id = costume._id || costume.id;
                   const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
                   const resolveImageUrl = (raw?: string) => {
                     if (!raw) return "";
                     const s = String(raw);
-                    if (s.startsWith("http://") || s.startsWith("https://")) return s;
+                    // Absolute URL (Cloudinary etc.)
+                    if (/^https?:\/\//.test(s)) return s;
+                    // Backend-hosted uploads
                     if (s.startsWith("/uploads/")) return `${apiBase}${s}`;
-                    // Fallback: join with base and ensure single slash
-                    return `${apiBase}/${s.replace(/^\/+/, "")}`;
+                    // Frontend-bundled assets (from Vite imports) or other relative paths -> leave as-is
+                    return s;
                   };
                   const rawImg = costume.image || (Array.isArray(costume.photos) && costume.photos[0]) || "";
                   const img = resolveImageUrl(rawImg);

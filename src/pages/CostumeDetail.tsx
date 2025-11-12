@@ -85,9 +85,12 @@ const CostumeDetail = () => {
   const resolveImageUrl = (raw?: string) => {
     if (!raw) return "";
     const s = String(raw);
-    if (s.startsWith("http://") || s.startsWith("https://")) return s;
+    // Absolute URLs (Cloudinary)
+    if (/^https?:\/\//.test(s)) return s;
+    // Backend uploads
     if (s.startsWith("/uploads/")) return `${apiBase}${s}`;
-    return `${apiBase}/${s.replace(/^\/+/, "")}`;
+    // Frontend asset or relative path: leave as-is so it resolves on the same origin as the frontend
+    return s;
   };
   const rawPhotos: string[] = Array.isArray(costume.photos) ? costume.photos : [];
   const rawImage = costume.image || (rawPhotos[0] ?? "");
